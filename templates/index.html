@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+{% block title %}Agenda Pessoal{% endblock %}
+{% block content %}
+<h1 class="text-center mb-4">Agenda Pessoal</h1>
+<a href="/adicionar" class="btn btn-primary mb-3">Adicionar Nova Tarefa</a>
+<!-- Botão para abrir o modal -->
+<button class="btn btn-danger mb-3 float-end" data-bs-toggle="modal" data-bs-target="#modalLimpar">Limpar Agenda</button>
+
+<!-- Modal de Confirmação para Limpar Agenda -->
+<div class="modal fade" id="modalLimpar" tabindex="-1" aria-labelledby="modalLabelLimpar" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabelLimpar">Confirmar Limpeza da Agenda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja limpar toda a agenda? Essa ação não pode ser desfeita.
+            </div>
+            <div class="modal-footer">
+                <form method="POST" action="/limpar">
+                    <button type="submit" class="btn btn-danger">Limpar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Tarefas Pendentes -->
+<h2 class="mt-4">Pendentes:</h2>
+<div class="row">
+    {% if pendentes %}
+        {% for tarefa in pendentes %}
+        <div class="col-md-4">
+            <div class="card mb-3" style="min-height: 250px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tarefa['nome'] }}</h5>
+                    <p class="card-text">{{ tarefa['descricao'] }}</p>
+                    <span class="badge {% if tarefa['prioridade'] == 'Alta' %}bg-warning text-dark
+                                              {% elif tarefa['prioridade'] == 'Média' %}bg-primary
+                                              {% elif tarefa['prioridade'] == 'Baixa' %}bg-info
+                                              {% endif %}">
+                        {{ tarefa['prioridade'] }}
+                    </span>
+                    <span class="badge bg-secondary"><i class="bi bi-clock-fill me-1"></i>Pendente</span>
+                    <p class="mt-2"><strong>Data e horário:</strong> {{ tarefa['data_execucao'] }} às {{ tarefa['horario_execucao'] }}</p>
+                    <a href="/editar/{{ tarefa['id'] }}" class="btn btn-warning btn-sm">Editar</a>
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluir{{ tarefa['id'] }}">Excluir</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <p class="text-muted">Nenhuma tarefa pendente.</p>
+    {% endif %}
+</div>
+
+<!-- Tarefas Concluídas -->
+<h2 class="mt-4">Concluídas:</h2>
+<div class="row">
+    {% if concluidas %}
+        {% for tarefa in concluidas %}
+        <div class="col-md-4">
+            <div class="card mb-3" style="min-height: 250px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tarefa['nome'] }}</h5>
+                    <p class="card-text">{{ tarefa['descricao'] }}</p>
+                    <span class="badge {% if tarefa['prioridade'] == 'Alta' %}bg-warning text-dark
+                                              {% elif tarefa['prioridade'] == 'Média' %}bg-primary
+                                              {% elif tarefa['prioridade'] == 'Baixa' %}bg-info
+                                              {% endif %}">
+                        {{ tarefa['prioridade'] }}
+                    </span>
+                    <span class="badge bg-success"><i class="bi bi-check-circle-fill me-1"></i>Concluída</span>
+                    <p class="mt-2"><strong>Concluída em:</strong> {{ tarefa['data_execucao'] }} às {{ tarefa['horario_execucao'] }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <p class="text-muted">Nenhuma tarefa concluída.</p>
+    {% endif %}
+</div>
+
+<!-- Tarefas Canceladas -->
+<h2 class="mt-4">Canceladas:</h2>
+<div class="row">
+    {% if canceladas %}
+        {% for tarefa in canceladas %}
+        <div class="col-md-4">
+            <div class="card mb-3" style="min-height: 250px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tarefa['nome'] }}</h5>
+                    <p class="card-text">{{ tarefa['descricao'] }}</p>
+                    <span class="badge {% if tarefa['prioridade'] == 'Alta' %}bg-warning text-dark
+                                              {% elif tarefa['prioridade'] == 'Média' %}bg-primary
+                                              {% elif tarefa['prioridade'] == 'Baixa' %}bg-info
+                                              {% endif %}">
+                        {{ tarefa['prioridade'] }}
+                    </span>
+                    <span class="badge bg-danger"><i class="bi bi-x-circle-fill me-1"></i>Cancelada</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <p class="text-muted">Nenhuma tarefa cancelada.</p>
+    {% endif %}
+</div>
+{% endblock %}

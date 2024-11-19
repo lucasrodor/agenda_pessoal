@@ -1,0 +1,31 @@
+body {
+    background-color: #f0f2f5;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.card-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.badge {
+    margin-right: 5px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.6rem;
+    border-radius: 0.8rem;
+}
+
+.status-badge i {
+    font-size: 1rem;
+    margin-right: 0.3rem;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
